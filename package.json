@@ -1,19 +1,20 @@
 {
   "name": "sheetshift",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "SheetShift: free CSV, Excel and JSON tools that run in your browser",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js",
+    "test": "node test/core.test.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "puppeteer-core": "^25.19.0",
     "xlsx": "^0.18.5"
+  },
+  "private": true,
+  "devDependencies": {
+    "puppeteer-core": "^25.19.0"
   }
 }
