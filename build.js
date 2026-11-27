@@ -303,6 +303,7 @@ write('favicon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32
 fs.mkdirSync(path.join(OUT, 'assets', 'vendor'), { recursive: true });
 ['style.css', 'core.js', 'runners.js', 'app.js'].forEach(f => { if (fs.existsSync('src/assets/' + f)) fs.copyFileSync('src/assets/' + f, path.join(OUT, 'assets', f)); });
 fs.copyFileSync('src/assets/vendor/xlsx.mini.min.js', path.join(OUT, 'assets/vendor/xlsx.mini.min.js'));
+if (fs.existsSync('src/static')) fs.readdirSync('src/static').forEach(f => fs.copyFileSync('src/static/' + f, path.join(OUT, f)));
 fs.copyFileSync('src/assets/vendor/xlsx-LICENSE.txt', path.join(OUT, 'assets/vendor/xlsx-LICENSE.txt'));
 if (fs.existsSync('src/assets/og-image.png')) fs.copyFileSync('src/assets/og-image.png', path.join(OUT, 'assets/og-image.png'));
 // samples
