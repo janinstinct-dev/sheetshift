@@ -9,7 +9,7 @@ const cfg = {
   gsc: process.env.GSC_VERIFICATION || '', // Google Search Console meta token
   bing: process.env.BING_VERIFICATION || '',
   repo: process.env.REPO_URL || '',
-  email: process.env.CONTACT_EMAIL || '',
+  email: process.env.CONTACT_EMAIL || 'janinstinct@gmail.com',
   built: new Date().toISOString().slice(0, 10)
 };
 const OUT = path.join(__dirname, 'dist');
