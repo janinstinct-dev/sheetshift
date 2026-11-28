@@ -69,3 +69,8 @@ Date: 28 Nov 2026. Site: https://sheetshift-tools.pages.dev (37 URLs).
 3. After the first impressions appear, rewrite titles for pages with impressions and no
    clicks.
 4. Add pages only for clusters the keyword map shows as unowned.
+
+## IndexNow (28 Nov 2026)
+- Key file: https://sheetshift-tools.pages.dev/306f566ce95528d38e36b96efabeb39d.txt (public by design).
+- All 37 sitemap URLs submitted to api.indexnow.org: HTTP 202 (accepted). 202 means received, not indexed.
+- Sitemap resubmitted in Bing Webmaster Tools. Discovered-URL count will update after Bing processes it.
