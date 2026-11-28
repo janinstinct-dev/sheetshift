@@ -500,6 +500,145 @@
   }
 
   /* ---------- Misc ---------- */
+  function parseColumnSpec(spec, headers) {
+    // tokens: name | name=new | 2 | 2=new. Order of tokens is the output order.
+    var out = [], problems = [];
+    String(spec || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean).forEach(function (tok) {
+      var m = /^(.*?)=(.*)$/.exec(tok);
+      var key = m ? m[1].trim() : tok;
+      var label = m ? m[2].trim() : '';
+      var idx = -1;
+      if (/^\d+$/.test(key)) { var n = +key; if (n >= 1 && n <= headers.length) idx = n - 1; }
+      else idx = headers.findIndex(function (h) { return h.toLowerCase() === key.toLowerCase(); });
+      if (idx < 0) { problems.push(key); return; }
+      out.push({ index: idx, name: label || headers[idx] });
+    });
+    return { columns: out, missing: problems };
+  }
+
+  function arrangeColumns(rows, o) {
+    if (!rows.length) return { rows: [], columns: [], missing: [] };
+    var headers = headerNames(rows);
+    var plan = parseColumnSpec(o.spec, headers);
+    if (!plan.columns.length) throw new Error('Name at least one column to keep, for example: id, name, total');
+    var used = {};
+    plan.columns.forEach(function (c) { used[c.index] = true; });
+    var cols = plan.columns.slice();
+    if (o.keepUnmatched !== false) headers.forEach(function (h, i) { if (!used[i]) cols.push({ index: i, name: h }); });
+    var hasHeader = o.header !== false;
+    var body = hasHeader ? rows.slice(1) : rows;
+    var out = [];
+    if (hasHeader) out.push(cols.map(function (c) { return c.name; }));
+    body.forEach(function (row) { out.push(cols.map(function (c) { return row[c.index] == null ? '' : row[c.index]; })); });
+    return { rows: out, columns: cols.map(function (c) { return c.name; }), missing: plan.missing };
+  }
+
+  function findReplace(rows, o) {
+    var find = o.find == null ? '' : String(o.find);
+    if (!find) throw new Error('Type the text to find.');
+    var repl = o.replace == null ? '' : String(o.replace);
+    var headers = headerNames(rows);
+    var idx;
+    if (o.columns && String(o.columns).trim()) {
+      var res = resolveColumns(o.columns, headers);
+      if (!res.indexes.length) throw new Error('None of these columns were found: ' + res.missing.join(', '));
+      idx = res.indexes;
+    } else idx = headers.map(function (_, i) { return i; });
+    var re = null;
+    if (o.regex) {
+      try { re = new RegExp(find, o.matchCase ? 'g' : 'gi'); }
+      catch (e) { throw new Error('That regular expression is not valid: ' + e.message); }
+    }
+    var hasHeader = o.header !== false;
+    var hits = 0, cells = 0;
+    var out = rows.map(function (row, ri) {
+      var copy = row.slice();
+      if (hasHeader && ri === 0) return copy;
+      idx.forEach(function (i) {
+        var v = copy[i] == null ? '' : String(copy[i]);
+        var nv = null;
+        if (re) {
+          re.lastIndex = 0;
+          var after = v.replace(re, repl);
+          if (after !== v) { nv = after; hits += 1; }
+        } else if (o.wholeCell) {
+          var a = o.matchCase ? v : v.toLowerCase();
+          var b = o.matchCase ? find : find.toLowerCase();
+          if (a === b) { nv = repl; hits += 1; }
+        } else {
+          var hay = o.matchCase ? v : v.toLowerCase();
+          var needle = o.matchCase ? find : find.toLowerCase();
+          var pos = 0, acc = '', count = 0, at;
+          while ((at = hay.indexOf(needle, pos)) >= 0) {
+            acc += v.slice(pos, at) + repl;
+            pos = at + needle.length;
+            count += 1;
+          }
+          if (count) { nv = acc + v.slice(pos); hits += count; }
+        }
+        if (nv !== null) { copy[i] = nv; cells += 1; }
+      });
+      return copy;
+    });
+    return { rows: out, stats: { replaced: hits, cells: cells } };
+  }
+
+  function transpose(rows) {
+    if (!rows.length) return { rows: [] };
+    var w = rows.reduce(function (m, r) { return Math.max(m, r.length); }, 0);
+    var out = [];
+    for (var c = 0; c < w; c++) {
+      var line = [];
+      for (var r = 0; r < rows.length; r++) line.push(rows[r][c] == null ? '' : rows[r][c]);
+      out.push(line);
+    }
+    return { rows: out };
+  }
+
+  function toNumber(v) {
+    if (v == null) return null;
+    var s = String(v).trim().replace(/[\s\u00a0]/g, '');
+    if (!s) return null;
+    if (s.indexOf(',') >= 0 && s.indexOf('.') >= 0) s = s.replace(/,/g, '');
+    else s = s.replace(',', '.');
+    if (!/^[-+]?(\d+(\.\d+)?|\.\d+)([eE][-+]?\d+)?$/.test(s)) return null;
+    var n = Number(s);
+    return isFinite(n) ? n : null;
+  }
+
+  function columnStats(rows, o) {
+    var headers = headerNames(rows);
+    var hasHeader = o.header !== false;
+    var body = hasHeader ? rows.slice(1) : rows;
+    var idx;
+    if (o.columns && String(o.columns).trim()) {
+      var res = resolveColumns(o.columns, headers);
+      if (!res.indexes.length) throw new Error('None of these columns were found: ' + res.missing.join(', '));
+      idx = res.indexes;
+    } else idx = headers.map(function (_, i) { return i; });
+    var out = [['Column', 'Filled cells', 'Numbers', 'Sum', 'Average', 'Minimum', 'Maximum', 'Distinct values']];
+    idx.forEach(function (i) {
+      var filled = 0, nums = [], seen = {};
+      body.forEach(function (row) {
+        var v = row[i] == null ? '' : String(row[i]).trim();
+        if (v === '') return;
+        filled += 1;
+        seen[v] = true;
+        var n = toNumber(v);
+        if (n !== null) nums.push(n);
+      });
+      var sum = nums.reduce(function (a, b) { return a + b; }, 0);
+      var rnd = function (n) { return Math.round(n * 1e6) / 1e6; };
+      out.push([headers[i], filled, nums.length,
+        nums.length ? rnd(sum) : '',
+        nums.length ? rnd(sum / nums.length) : '',
+        nums.length ? rnd(Math.min.apply(null, nums)) : '',
+        nums.length ? rnd(Math.max.apply(null, nums)) : '',
+        Object.keys(seen).length]);
+    });
+    return { rows: out, stats: { columns: idx.length, rows: body.length } };
+  }
+
   function stats(rows, hasHeader) {
     var body = hasHeader === false ? rows : rows.slice(1);
     return { rows: body.length, columns: rows[0] ? rows[0].length : 0 };
@@ -535,5 +674,6 @@
   return { decodeBuffer: decodeBuffer, detectDelimiter: detectDelimiter, parseCSV: parseCSV, toCSV: toCSV,
     clean: clean, dedupe: dedupe, removeEmpty: removeEmpty, csvToJson: csvToJson, jsonToCsv: jsonToCsv,
     merge: merge, split: split, sortRows: sortRows, filterRows: filterRows, compare: compare, extract: extract, anonymize: anonymize, guessSensitive: guessSensitive,
-    headerNames: headerNames, resolveColumns: resolveColumns, stats: stats, safeName: safeName, makeZip: makeZip, crc32: crc32, isEmptyRow: isEmptyRow };
+    headerNames: headerNames, resolveColumns: resolveColumns, stats: stats,
+    parseColumnSpec: parseColumnSpec, arrangeColumns: arrangeColumns, findReplace: findReplace, transpose: transpose, columnStats: columnStats, toNumber: toNumber, safeName: safeName, makeZip: makeZip, crc32: crc32, isEmptyRow: isEmptyRow };
 });

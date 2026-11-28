@@ -46,7 +46,7 @@ BASE=https://sheetshift-tools.pages.dev node test/e2e.js
 curl -s https://sheetshift-tools.pages.dev/sitemap.xml | grep -c '<loc>'
 ```
 
-Expect 102 passing checks and 32 URLs.
+Expect 122 passing checks and 37 URLs.
 
 ## Rolling back
 

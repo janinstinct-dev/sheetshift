@@ -8,7 +8,7 @@ The honest assessment on 28 Nov 2026:
 |---|---|
 | Indexed pages | 0 confirmed. Sitemap submitted, homepage unknown to Google |
 | Organic traffic | none yet |
-| Content depth | 16 tool pages with real explanatory copy, 3 guides. Adequate, not yet proven |
+| Content depth | 20 tool pages with real explanatory copy, 4 guides. Adequate, not yet proven |
 | Policy pages | About, Contact, Privacy, Terms present |
 | Original content | yes; every tool is ours, copy is written for the tool |
 | Navigation | clear, category hubs plus internal links |
@@ -22,7 +22,7 @@ indexing plus 4-6 weeks of real traffic data.
 
 1. Get pages indexed (Search Console, then Bing).
 2. Reach a point where Search Console shows impressions for a meaningful share of the
-   32 URLs. Impressions are the first real signal that the pages match queries.
+   37 URLs. Impressions are the first real signal that the pages match queries.
 3. Only then apply, with the site as it is: no ads inside any tool workflow, no ads
    between a file selection and its result.
 4. If approved, place ads only below the tool and in article bodies, never in the

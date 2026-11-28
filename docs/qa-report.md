@@ -2,15 +2,15 @@
 
 Last full run: 27 Nov 2026, 09:08 EET (local build + live site).
 Site under test: https://sheetshift-tools.pages.dev
-Commit: 77d8635
+Commit: see the repo history; this report was last updated 28 Nov 2026 after four tools were added.
 
 ## What was tested
 
 | Layer | Command | Result |
 |---|---|---|
-| Data core unit tests | `npm test` (test/core.test.js) | 45 passed, 0 failed |
-| Browser end-to-end, local | `BASE=http://localhost:8788 node test/e2e.js` | 102 checks passed, 0 failed |
-| Browser end-to-end, live | `BASE=https://sheetshift-tools.pages.dev node test/e2e.js` | 102 checks passed, 0 failed |
+| Data core unit tests | `npm test` (test/core.test.js) | 62 passed, 0 failed |
+| Browser end-to-end, local | `BASE=http://localhost:8788 node test/e2e.js` | 122 checks passed, 0 failed |
+| Browser end-to-end, live | `BASE=https://sheetshift-tools.pages.dev node test/e2e.js` | 122 checks passed, 0 failed (run again after the 28 Nov deploy) |
 | Build | `npm run build` | dist written, no errors |
 
 The end-to-end suite drives a real headless Chrome. For every tool it loads the page,
@@ -20,13 +20,14 @@ that no request leaves the page while a file is being processed.
 
 ## Coverage by tool
 
-All 16 tool pages were exercised. Each one: file selection, parse, action, preview,
+All 20 tool pages were exercised. Each one: file selection, parse, action, preview,
 download, and the empty/invalid-input path.
 
 - CSV Viewer, CSV Cleaner, Remove Duplicate Rows, Remove Empty Rows, Remove Empty Columns
 - CSV to JSON, JSON to CSV, Excel to CSV, CSV Delimiter Converter
 - CSV Merger, CSV Splitter, CSV Comparator, Column Extractor
 - Data Anonymizer, Sort CSV, Filter CSV Rows
+- CSV Column Manager (rename, reorder, drop), Find and Replace in CSV, Transpose CSV, CSV Column Summary
 
 Parsing cases covered: comma, semicolon, tab and pipe delimiters; quoted fields with
 embedded commas, quotes and newlines; CRLF and LF; UTF-8 with and without BOM;
@@ -34,7 +35,7 @@ header-only files; files with ragged rows.
 
 ## Site-level checks
 
-- All 32 URLs in sitemap.xml return 200 over HTTPS.
+- All 37 URLs in sitemap.xml return 200 over HTTPS.
 - A non-existent path returns the custom 404 page with a 404 status.
 - Canonical tag present and self-referencing on every page.
 - robots.txt allows crawling and points to the sitemap.

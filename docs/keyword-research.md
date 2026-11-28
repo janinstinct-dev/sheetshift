@@ -58,7 +58,12 @@ looks. "Autocomplete" means the phrase appeared in Google's suggestions when typ
 | 17 | how to compare two spreadsheets | not typed | /guides/how-to-compare-two-spreadsheets/ | informational | guide results | P2 |
 | 18 | how to clean a messy csv file | not typed | /guides/how-to-clean-a-messy-csv-file/ | informational | guide results | P2 |
 | 19 | why does csv show weird characters | not typed | /guides/why-csv-shows-weird-characters/ | informational | forum-heavy | P3 |
-| 20 | csv to json python / json to csv python | yes | no page | wrong intent for us | developer docs own it | skip |
+| 20 | rename columns in csv / reorder csv columns | yes | /tools/rename-csv-columns/ | exact | header-edit guides and small tools | P2 |
+| 21 | find and replace in csv | yes | /tools/find-replace-csv/ | exact | generic text editors, few CSV-specific | P2 |
+| 22 | transpose csv | yes | /tools/transpose-csv/ | exact | thin, mostly spreadsheet advice | P2 |
+| 23 | sum a column in csv / average of a csv column | yes | /tools/csv-column-stats/ | exact | spreadsheet help pages | P2 |
+| 24 | csv too large for excel | not typed | /guides/how-to-open-a-large-csv-file/ | informational | forum threads and vendor docs | P2 |
+| 25 | csv to json python / json to csv python | yes | no page | wrong intent for us | developer docs own it | skip |
 
 Notes on the skipped row: "csv to json python" and similar are among the strongest
 autocomplete variants, but the searcher wants code, not a web tool. A page aimed at it

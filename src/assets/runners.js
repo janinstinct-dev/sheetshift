@@ -92,6 +92,27 @@
       var r = C.filterRows(rows, o);
       return tbl(r.rows, { summary: 'Kept ' + r.stats.matched + ' of ' + plural(r.stats.total, 'row') + '.', name: 'filtered.csv' });
     },
+    'rename-csv-columns': function (ins, o) {
+      var rows = rowsOf(ins[0]);
+      var r = C.arrangeColumns(rows, o);
+      var warnings = r.missing && r.missing.length ? ['These columns were not found and were skipped: ' + r.missing.join(', ')] : undefined;
+      return tbl(r.rows, { summary: 'Output has ' + plural(r.rows[0].length, 'column') + ': ' + r.columns.join(', ') + '.', name: 'columns.csv', warnings: warnings });
+    },
+    'find-replace-csv': function (ins, o) {
+      var rows = rowsOf(ins[0]);
+      var r = C.findReplace(rows, o);
+      return tbl(r.rows, { summary: 'Replaced ' + plural(r.stats.replaced, 'match') + ' in ' + plural(r.stats.cells, 'cell') + '.', name: 'replaced.csv' });
+    },
+    'transpose-csv': function (ins, o) {
+      var rows = rowsOf(ins[0]);
+      var r = C.transpose(rows);
+      return tbl(r.rows, { summary: 'Now ' + plural(r.rows.length, 'row') + ' and ' + plural(r.rows[0].length, 'column') + '.', name: 'transposed.csv' });
+    },
+    'csv-column-stats': function (ins, o) {
+      var rows = rowsOf(ins[0]);
+      var r = C.columnStats(rows, o);
+      return tbl(r.rows, { summary: 'Summarised ' + plural(r.stats.columns, 'column') + ' over ' + plural(r.stats.rows, 'data row') + '. Numbers only: text cells are counted but not averaged.', name: 'column-summary.csv' });
+    },
     'csv-delimiter-converter': function (ins, o) {
       var rows = rowsOf(ins[0]);
       return tbl(rows, { summary: 'Rewrote ' + plural(rows.length, 'row') + ' with a ' + ({ ',': 'comma', ';': 'semicolon', 'tab': 'tab', '|': 'pipe' }[o.outDelimiter || ','] || 'comma') + ' delimiter.', name: 'converted.' + (o.outDelimiter === 'tab' ? 'tsv' : 'csv') });

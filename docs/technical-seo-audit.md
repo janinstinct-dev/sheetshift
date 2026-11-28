@@ -7,8 +7,8 @@ Date: 27 Nov 2026. Site: https://sheetshift-tools.pages.dev
 | Item | State |
 |---|---|
 | robots.txt | Present, allows all, declares the sitemap |
-| sitemap.xml | Present, 32 URLs, all absolute, all returning 200 |
-| Canonical tags | Self-referencing on all 32 pages |
+| sitemap.xml | Present, 37 URLs, all absolute, all returning 200 |
+| Canonical tags | Self-referencing on all 37 pages |
 | HTTPS | Enforced by Cloudflare; HTTP redirects to HTTPS |
 | Trailing slashes | Directory URLs with a trailing slash, consistent in sitemap and internal links |
 | 404 | Custom page, returns a real 404 status |

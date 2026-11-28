@@ -32,6 +32,11 @@ canonical stays on the owning page.
 | /guides/how-to-clean-a-messy-csv-file/ | how to clean a messy csv file | "csv cleanup steps" | csv cleaner tool query |
 | /guides/how-to-compare-two-spreadsheets/ | how to compare two spreadsheets | "compare excel sheets" | csv comparator tool query |
 | /guides/why-csv-shows-weird-characters/ | csv weird characters, csv encoding issue | "csv shows Ã©", "utf-8 bom csv" | tool queries |
+| /tools/rename-csv-columns/ | rename columns in csv, reorder csv columns | "delete a column from csv", "rename csv header" | column extraction |
+| /tools/find-replace-csv/ | find and replace in csv | "replace text in csv column", "bulk edit csv" | cleaning rules (csv-cleaner) |
+| /tools/transpose-csv/ | transpose csv | "swap rows and columns csv", "rows to columns" | delimiter conversion |
+| /tools/csv-column-stats/ | sum a column in csv | "average of a csv column", "count distinct values csv" | comparison (csv-comparator) |
+| /guides/how-to-open-a-large-csv-file/ | csv too large for excel | "open big csv", "csv row limit excel" | splitting tool query |
 | /about/, /contact/, /privacy/, /terms/, /how-it-works/ | brand and trust queries | none | nothing commercial |
 
 ## Rules that keep this map clean

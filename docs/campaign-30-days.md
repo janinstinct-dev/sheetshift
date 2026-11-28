@@ -15,12 +15,12 @@ automated posting, no paid engagement.
 
 ## What is done (days 1-7)
 
-- Site live on Cloudflare Pages with 32 URLs: 16 tools, 6 category pages, 3 guides, 5
+- Site live on Cloudflare Pages with 37 URLs: 20 tools, 6 category pages, 4 guides, 5
   site pages, home, 404.
 - GA4 property and web stream created, consent-gated. Measurement ID `G-H8TNG17E5G`.
 - Search Console URL-prefix property verified by HTML file; sitemap submitted.
 - Bing Webmaster: site imported from Search Console, sitemap processed, 32 URLs
-  discovered, 0 errors.
+  discovered, 0 errors (before the 28 Nov additions; resubmit to pick up the new pages).
 - Keyword matrix and keyword-to-URL map written from real autocomplete and SERP data.
 - Daily KPI tracker created.
 
@@ -31,8 +31,9 @@ automated posting, no paid engagement.
   retried; there is no way to force it.
 - No impressions, clicks, positions or sessions exist yet, so the KPI tracker starts at
   zero with the date each metric became available.
-- Extra pages for days 8-14 are not built yet. They are only worth building where a
-  cluster in the keyword map has no owning URL, which is why the map came first.
+- Days 8-14 pages: four new tools and one guide were built on 28 Nov (CSV Column Manager,
+  Find and Replace in CSV, Transpose CSV, CSV Column Summary, and the guide on opening a
+  CSV that is too big for Excel). Each owns a cluster the site did not cover.
 
 ## Days 8-14 candidates (build only if genuinely distinct)
 

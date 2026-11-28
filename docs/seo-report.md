@@ -1,13 +1,13 @@
 # SEO implementation report
 
-Date: 28 Nov 2026. Site: https://sheetshift-tools.pages.dev (32 URLs).
+Date: 28 Nov 2026. Site: https://sheetshift-tools.pages.dev (37 URLs).
 
 ## What was built
 
 ### Site structure
 - Home page, 6 category hubs (/csv-tools/, /excel-tools/, /json-tools/,
-  /data-cleaning/, /data-comparison/, /data-conversion/), 16 tool pages under /tools/,
-  3 guides under /guides/, About, Contact, Privacy, Terms, How It Works, a guides index,
+  /data-cleaning/, /data-comparison/, /data-conversion/), 20 tool pages under /tools/,
+  4 guides under /guides/, About, Contact, Privacy, Terms, How It Works, a guides index,
   a custom 404, sitemap.xml and robots.txt.
 - Every tool belongs to exactly one category hub; every hub links to its tools and each
   tool links back to its hub and across to 2-3 related tools.
@@ -29,7 +29,7 @@ Date: 28 Nov 2026. Site: https://sheetshift-tools.pages.dev (32 URLs).
 
 ### Crawl and index
 - sitemap.xml generated at build time from the same data that generates the pages, so it
-  cannot drift out of sync. 32 URLs, all absolute, no priorities guessed at.
+  cannot drift out of sync. 37 URLs, all absolute, no priorities guessed at.
 - robots.txt allows all crawlers and declares the sitemap.
 - Cloudflare Pages serves HTTPS with HTTP redirected.
 
@@ -44,7 +44,7 @@ Date: 28 Nov 2026. Site: https://sheetshift-tools.pages.dev (32 URLs).
 
 | Signal | Value | Source | When |
 |---|---|---|---|
-| URLs in sitemap | 32 | sitemap.xml | 28 Nov |
+| URLs in sitemap | 37 | sitemap.xml | 28 Nov |
 | URLs discovered by Bing | 32, 0 errors | Bing Webmaster sitemap report | 27 Nov |
 | Pages known to Google | 0 confirmed; homepage reported "URL unknown to Google" | Search Console | 27 Nov |
 | GSC indexing requests | 1 attempt, returned quota error | Search Console | 27 Nov |

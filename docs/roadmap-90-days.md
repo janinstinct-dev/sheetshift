@@ -4,7 +4,7 @@ From 27 Nov 2026. Free-only throughout.
 
 ## Days 1-30 (to 26 Dec): foundation and first index
 
-- Index the 32 URLs; retry Search Console indexing requests as the quota allows.
+- Index the 37 URLs; retry Search Console indexing requests as the quota allows.
 - Build 3-5 additional pages only where the keyword map shows an unowned cluster.
 - Publish 2-3 guides aimed at the informational queries around CSV problems.
 - Publish 1-2 sample datasets on the samples pages so tool pages have something to link.

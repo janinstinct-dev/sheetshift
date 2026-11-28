@@ -353,6 +353,90 @@ const TOOLS = [
     useCases: [['Open European CSV in an app that expects commas', 'Convert semicolon files from a German or French Excel export so a US tool reads them correctly.'], ['Make a TSV', 'Some bioinformatics and database tools prefer tab-separated files.']],
     faqs: [['Why does Excel use semicolons?', 'In countries where the comma is the decimal mark, Excel uses the semicolon as the list separator when it saves CSV.'], ['Will quoted fields break?', 'No. The parser understands quotes, and the writer adds quotes whenever a value contains the new delimiter.'], ['Does this change decimal commas to dots?', 'No. Delimiters change, values stay the same.']],
     related: ['csv-viewer', 'excel-to-csv', 'csv-cleaner']
+  },
+  {
+    slug: 'rename-csv-columns', name: 'CSV Column Manager', cat: 'csv-tools', cats: ['csv-tools', 'data-cleaning'], kw: 'rename columns in csv',
+    longtail: ['reorder csv columns', 'delete a column from csv', 'rename csv header online'],
+    title: 'Rename, Reorder and Drop CSV Columns | SheetShift',
+    desc: 'Rename CSV headers, change column order and drop the columns you do not need, written as one short line. Runs in your browser, nothing uploaded.',
+    h1: 'Rename, reorder and drop CSV columns',
+    lead: 'One line of text decides the shape of the output. List the columns you want, in the order you want them, and rename any of them on the way. Columns you leave out are dropped; columns you do not mention can be kept at the end. This is faster than editing a header row by hand and it never touches your original file.',
+    inputs: [{ id: 'a', kind: 'csv', label: 'CSV file' }],
+    options: [inDelim, outDelim, hdr(),
+      { id: 'spec', label: 'Columns, in output order', type: 'text', value: '', placeholder: 'id, customer=name, total', required: true },
+      { id: 'keepUnmatched', label: 'Keep the columns I did not mention, at the end', type: 'checkbox', value: true }],
+    sample: 'order_id,customer_name,order_total,internal_note,created\n1001,Alice Morgan,129.90,check fraud flag,2026-11-02\n1002,Ben Okafor,54.00,,2026-11-03\n1003,Carla Diaz,310.25,call back,2026-11-05\n',
+    sampleName: 'orders-export.csv',
+    exampleOpts: { spec: 'order_id, customer_name=customer, order_total=total, created', keepUnmatched: false },
+    steps: ['Load the CSV. The tool reads the header row to learn the column names.', 'In the columns box, list the names you want, separated by commas. Write old=new to rename one, for example customer_name=customer.', 'Leave "Keep the columns I did not mention" ticked if you only want to rename or reorder. Untick it to drop everything you did not list.', 'Press Run, check the preview, then download. The header row is rewritten to match.'],
+    formats: 'CSV, TSV and other delimited text in, CSV out with the delimiter you pick. UTF-8 output.',
+    limits: ['Column names are matched without regard to capitals, but a name that contains a comma cannot be written in the box. Rename it first, or use the column number instead.', 'You can use a number instead of a name: 1 is the first column, 2 the second, and 2=total renames the second column to total.', 'The tool does not move data between columns or merge two columns. Use the column extractor and a spreadsheet for that.'],
+    useCases: [['Match an import template', 'A shop or CRM expects columns named sku, title, price. Rename and reorder a supplier export to fit before uploading it.'], ['Remove internal columns', 'An export carries internal notes, cost prices or staff IDs. List only the columns the recipient should see and drop the rest.']],
+    faqs: [['What happens to a column I list twice?', 'It appears twice in the output, with the same data. That is occasionally useful, but it is usually a typo.'], ['Can I add a new empty column?', 'Not with this tool. A new column needs a value, and inventing one would change your data silently.'], ['Is the file uploaded?', 'No. The page reads the file in your browser and never sends it anywhere.']],
+    related: ['column-extractor', 'csv-viewer', 'find-replace-csv']
+  },
+  {
+    slug: 'find-replace-csv', name: 'Find and Replace in CSV', cat: 'data-cleaning', cats: ['data-cleaning', 'csv-tools'], kw: 'find and replace in csv',
+    longtail: ['replace text in csv column', 'bulk edit csv online', 'search and replace csv file'],
+    title: 'Find and Replace in a CSV Column Online | SheetShift',
+    desc: 'Find and replace text in one column or across a whole CSV. Whole cell, case sensitive or regular expression. Free, and the file stays on your device.',
+    h1: 'Find and replace text in a CSV file',
+    lead: 'Renaming a category, fixing a misspelled city or clearing a placeholder value across thousands of rows is a find and replace job. Limit it to one column so a value that also appears elsewhere is left alone, and the summary tells you how many matches were replaced before you download.',
+    inputs: [{ id: 'a', kind: 'csv', label: 'CSV file' }],
+    options: [inDelim, outDelim, hdr(),
+      { id: 'columns', label: 'Column to search (leave empty for every column)', type: 'text', value: '', placeholder: 'status' },
+      { id: 'find', label: 'Find', type: 'text', value: '', placeholder: 'n/a', required: true },
+      { id: 'replace', label: 'Replace with (leave empty to delete the text)', type: 'text', value: '' },
+      { id: 'matchCase', label: 'Match capitalisation exactly', type: 'checkbox', value: false },
+      { id: 'wholeCell', label: 'Only replace when the whole cell matches', type: 'checkbox', value: false },
+      { id: 'regex', label: 'Treat the find text as a regular expression', type: 'checkbox', value: false }],
+    sample: 'sku,status,note\nA-100,paid,delivered 2 Nov\nA-101,N/A,no update\nA-102,n/a,no update\nA-103,pending,N/A on invoice\n',
+    sampleName: 'statuses.csv',
+    exampleOpts: { columns: 'status', find: 'n/a', replace: 'unknown' },
+    steps: ['Load the CSV and name the column to search. Leave the column box empty to search every column.', 'Type the text to find. With "Only replace when the whole cell matches" ticked, the cell must equal the find text exactly; otherwise every occurrence inside a cell is replaced.', 'Press Run. The summary reports how many matches were replaced and in how many cells.', 'Check the preview before downloading, especially when the find text is short.'],
+    formats: 'CSV, TSV and other delimited text in, CSV out with the delimiter you pick.',
+    limits: ['Matching is text matching, not number matching: 1.0 and 1 are different strings.', 'The header row is never changed.', 'A regular expression runs in your browser with JavaScript rules. A pattern that can match an empty string will insert the replacement between every character, so test it on a copy first.'],
+    useCases: [['Standardise categories', 'Replace In progress, in-progress and In Progress with one value so a pivot table groups them together.'], ['Clear placeholders', 'Replace N/A, n/a and NA with a single value, or with nothing, before importing a file that rejects them.']],
+    faqs: [['Can I replace across several columns?', 'Leave the column box empty to search all of them, or list them with commas, for example status, note.'], ['Does it change my file?', 'No. The result is a new file you download. Your original stays as it is.'], ['What regular expression syntax is supported?', 'JavaScript regular expressions. Groups work in the find text, but the replacement is a plain string, so $1 is not expanded.']],
+    related: ['csv-cleaner', 'rename-csv-columns', 'filter-csv-rows']
+  },
+  {
+    slug: 'transpose-csv', name: 'Transpose CSV', cat: 'csv-tools', cats: ['csv-tools', 'data-conversion'], kw: 'transpose csv',
+    longtail: ['swap rows and columns csv', 'convert rows to columns csv', 'rotate a csv table'],
+    title: 'Transpose a CSV: Swap Rows and Columns | SheetShift',
+    desc: 'Turn the rows of a CSV into columns and the columns into rows. Useful for wide month-by-month reports that should be a long list. Runs in your browser.',
+    h1: 'Transpose a CSV file: rows to columns, columns to rows',
+    lead: 'A report with one column per month is easy to read and hard to chart. Transposing swaps the two axes: each row becomes a column, each column becomes a row. The result opens as a normal CSV in any spreadsheet, with no formulas to break.',
+    inputs: [{ id: 'a', kind: 'csv', label: 'CSV file' }],
+    options: [inDelim, outDelim],
+    sample: 'product,Jan,Feb,Mar\nWidget,120,135,150\nGadget,80,95,88\nDoohickey,15,20,26\n',
+    sampleName: 'monthly-sales.csv',
+    steps: ['Load the CSV or paste its text.', 'Press Run. The first row becomes the first column, and the first column becomes the first row.', 'Check the shape in the summary: the number of rows and columns swaps over.', 'Download the transposed file and open it in your spreadsheet.'],
+    formats: 'CSV, TSV and other delimited text in, CSV out with the delimiter you pick.',
+    limits: ['Transposing does nothing clever with headers. The header row simply becomes the first column, which is usually what you want.', 'A file with many columns produces a file with many rows. A 10,000 column table becomes 10,000 rows.', 'Ragged rows are padded with empty cells so the result stays rectangular.'],
+    useCases: [['Make a chartable table', 'Month names across the top are fine for reading and awkward for most chart tools. Transpose to get one row per month.'], ['Turn a one-row export into a list', 'Some systems export a single row of key and value pairs. Transposing gives a two-column table you can filter.']],
+    faqs: [['Does it keep my formatting?', 'CSV has no formatting. Values are copied exactly as text.'], ['What about merged cells in the original spreadsheet?', 'Merged cells do not exist in CSV. If the file came from Excel, the value sits in the first cell and the others are empty, and that is what you get after transposing too.'], ['Can I transpose back?', 'Yes. Transposing twice returns the original table.']],
+    related: ['csv-viewer', 'csv-column-stats', 'csv-splitter']
+  },
+  {
+    slug: 'csv-column-stats', name: 'CSV Column Summary', cat: 'csv-tools', cats: ['csv-tools', 'data-cleaning'], kw: 'sum a column in csv',
+    longtail: ['average of a csv column', 'count distinct values in csv', 'csv column statistics online'],
+    title: 'Sum, Average and Count a CSV Column | SheetShift',
+    desc: 'Get the sum, average, minimum, maximum, filled count and distinct values for every column in a CSV. Numbers are detected per cell, text is skipped.',
+    h1: 'Sum, average and count the values in a CSV column',
+    lead: 'Before you import, chart or trust a file, a column summary tells you what is in it: how many cells are filled, how many hold real numbers, the total and average, and how many distinct values there are. It is the fastest way to spot a column that is 20 percent empty or a total that looks wrong.',
+    inputs: [{ id: 'a', kind: 'csv', label: 'CSV file' }],
+    options: [inDelim, hdr(),
+      { id: 'columns', label: 'Columns to summarise (leave empty for every column)', type: 'text', value: '', placeholder: 'amount, quantity' }],
+    sample: 'order_id,country,amount,quantity\n1001,US,129.90,2\n1002,UK,54.00,1\n1003,CA,310.25,5\n1004,US,,3\n1005,US,75.50,1\n',
+    sampleName: 'orders.csv',
+    exampleOpts: { columns: 'amount, quantity' },
+    steps: ['Load the CSV. The first row is treated as column names unless you untick the header option.', 'Leave the columns box empty to summarise every column, or list the ones you care about.', 'Press Run. The output is a small table with one row per column.', 'Download it as CSV if you want to keep the numbers with the project.'],
+    formats: 'CSV, TSV and other delimited text in, a summary table out (CSV download).',
+    limits: ['Numbers are detected per cell. A cell like 12 kg is text and is not summed, which keeps the total honest.', 'A comma is read as a decimal separator when there is no dot in the same value: 2,5 counts as 2.5. When both appear, the comma is treated as a thousands separator.', 'Distinct values are counted as exact text, so US and us count as two.'],
+    useCases: [['Sanity-check an export', 'A total that is far below the sum of the rows means some cells are text, not numbers, and an import will fail or drop them.'], ['Find empty columns', 'The filled count shows at a glance which columns are mostly empty before you build anything on them.']],
+    faqs: [['Why is the number count lower than the filled count?', 'Some cells hold text, dates or values with units. They are counted as filled but not as numbers, and they are excluded from the sum and average.'], ['Does it change my file?', 'No. It only reads the file and produces a summary you can download.'], ['Can it group by a column?', 'Not yet. Filter or sort the file first, then summarise the subset.']],
+    related: ['filter-csv-rows', 'sort-csv', 'csv-viewer']
   }
 ];
 
@@ -398,6 +482,21 @@ const GUIDES = [
       ['Step 3: Normalize before comparing', 'Stray spaces and different capitalisation create false differences. Either tick the ignore options in the <a href="/tools/csv-comparator/">CSV Comparator</a> or run both files through the <a href="/tools/csv-cleaner/">CSV Cleaner</a> first.'],
       ['Step 4: Read the result in three buckets', '<ul><li><strong>Only in A:</strong> rows removed or missing from the newer file.</li><li><strong>Only in B:</strong> rows added.</li><li><strong>Changed:</strong> same key, different values, listed column by column with the old and new value.</li></ul>Download the report as CSV to share or filter it further.'],
       ['Know the limits', 'The comparison reads cell text. The values 1.0 and 1 are different text even though they are equal as numbers. Rows with the same key in the same file are reduced to the first occurrence and flagged. If your data has no natural key, consider adding a row number column in both files before comparing, but only if the row order has not changed.']
+    ]
+  },
+  {
+    slug: 'how-to-open-a-large-csv-file', title: 'How to Open a CSV File That Is Too Big for Excel | SheetShift',
+    desc: 'What to do when a CSV is too large for Excel: check the size, open it in a viewer, split it, filter it, or summarise it without loading every row.',
+    h1: 'How to open a CSV file that is too big for Excel', kw: 'csv too large for excel',
+    tools: ['csv-viewer', 'csv-splitter', 'filter-csv-rows', 'csv-column-stats'],
+    body: [
+      ['First, find out how big it really is', 'A CSV of a few hundred megabytes can hold millions of rows. Excel worksheets stop at 1,048,576 rows and 16,384 columns, so a file over that limit cannot be opened in a sheet at all, however much memory the machine has. Check the file size and, if you can, the row count before you try. A viewer that reads the file as text will tell you the row and column counts without opening a spreadsheet.'],
+      ['Open it in a viewer instead', 'The <a href="/tools/csv-viewer/">CSV Viewer</a> reads the file in your browser and shows the first rows as a table, with the true row and column counts for the whole file. That is enough to answer most questions: does the delimiter look right, are the columns what you expected, is the last row complete. Nothing is uploaded, and closing the tab discards it.'],
+      ['Split it into files Excel can open', 'If you need to edit the data in Excel, split it first. The <a href="/tools/csv-splitter/">CSV Splitter</a> cuts a file into parts by row count or by the values in a column, so each part fits under the row limit. Splitting by a column such as country or month keeps related rows together, which is usually more useful than cutting every 100,000 rows.'],
+      ['Reduce it to the rows you need', 'Often you do not need the whole file. The <a href="/tools/filter-csv-rows/">Filter CSV Rows</a> tool keeps only rows that match a condition, for example one date range or one customer, and writes a much smaller CSV that Excel opens instantly. Filter first, then edit.'],
+      ['Summarise instead of opening', 'If the question is what the data adds up to, a summary may answer it without Excel. The <a href="/tools/csv-column-stats/">CSV Column Summary</a> gives the sum, average, minimum, maximum, filled count and distinct values per column. That catches a wrong total or a half-empty column in seconds.'],
+      ['If you must use a spreadsheet', 'Open the file through the spreadsheet application itself rather than double-clicking it. In Excel use Data, then From Text/CSV, and set identifier columns such as ZIP codes and product codes to Text so leading zeros survive. In LibreOffice use File, Open and choose the CSV import dialog. Both handle large files better than a double-click and neither silently changes your data.'],
+      ['What not to do', '<ul><li>Do not open a 500 MB CSV on a phone. The browser tab will run out of memory.</li><li>Do not split a file and then join it back with a plain concatenation if any part has a header row, or you will get repeated headers in the middle.</li><li>Do not assume a file that opened once will open again on a smaller machine. Row count matters more than file size.</li></ul>']
     ]
   }
 ];

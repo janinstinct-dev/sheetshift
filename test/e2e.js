@@ -78,7 +78,7 @@ const ok = (c, m) => { log.push((c ? 'PASS ' : 'FAIL ') + m); console.log((c ? '
   p = await newPage(); await p.goto(BASE + '/', { waitUntil: 'networkidle0' });
   await p.type('#tool-search', 'json'); const vis = await p.$$eval('#tool-grid li:not([hidden])', l => l.map(x => x.querySelector('h3').textContent)); ok(vis.length >= 2 && vis.every(n => /json|JSON/.test(n) || true), 'search "json" -> ' + vis.join(','));
   await p.$eval('#tool-search', e => e.value = ''); await p.$eval('#tool-search', e => e.dispatchEvent(new Event('input')));
-  await p.click('.chip[data-cat=data-comparison]'); const v2 = await p.$$eval('#tool-grid li:not([hidden])', l => l.length); ok(v2 === 1, 'category filter comparison -> ' + v2);
+  await p.click('.chip[data-cat=data-comparison]'); const v2 = await p.$$eval('#tool-grid li:not([hidden])', l => l.length); const exp2 = TOOLS.filter(t => t.cats.includes('data-comparison')).length; ok(v2 === exp2, 'category filter comparison -> ' + v2 + ' of ' + exp2);
   await p.click('#theme-toggle'); const th = await p.$eval('html', e => e.getAttribute('data-theme')); ok(!!th, 'theme toggle -> ' + th);
   ok(p.errs.length === 0, 'home no console errors ' + p.errs.join('|'));
   await p.screenshot({ path: '/tmp/home-dark.png' });

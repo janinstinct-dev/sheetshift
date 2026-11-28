@@ -187,7 +187,7 @@ function toolCard(t) {
 
 function homePage() {
   const title = 'SheetShift: Free CSV, Excel and JSON Tools in Your Browser';
-  const desc = 'Clean, convert, compare and simplify spreadsheet data. 16 free tools for CSV, Excel and JSON that run in your browser. No sign-up, no upload.';
+  const desc = 'Clean, convert, compare and simplify spreadsheet data. ' + TOOLS.length + ' free tools for CSV, Excel and JSON that run in your browser. No sign-up, no upload.';
   const ld = [{ '@context': 'https://schema.org', '@type': 'WebSite', name: 'SheetShift', url: url('/'), description: desc, inLanguage: 'en' }, { '@context': 'https://schema.org', '@type': 'Organization', name: 'SheetShift', url: url('/'), logo: url('/favicon.svg') }];
   const chips = `<button type="button" class="chip active" data-cat="all">All</button>` + Object.entries(CATEGORIES).map(([s, c]) => `<button type="button" class="chip" data-cat="${s}">${esc(c.name)}</button>`).join('');
   return head({ title, desc, path: '/', ld }) + header() + `
