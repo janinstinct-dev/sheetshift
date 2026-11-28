@@ -17,7 +17,18 @@ BASE=http://localhost:8788 node test/e2e.js   # browser tests (needs Chrome at /
 - `tools.js`: tool catalogue (content, options, samples, FAQs). One entry = one page.
 - `build.js`: static site generator (pages, sitemap, robots, headers, samples).
 - `src/assets/core.js`: parsing and data functions. `runners.js`: one runner per tool. `app.js`: UI.
-- `docs/`: SEO, keyword map, QA and deployment documents.
+- `docs/`: project documents
+  - `qa-report.md` test coverage, results, known gaps
+  - `seo-report.md` what was implemented and the measured state
+  - `technical-seo-audit.md` crawl, on-page, performance
+  - `keyword-research.md` prioritisation matrix (real autocomplete and SERP data only)
+  - `keyword-map.md` keyword to URL map, cannibalisation rules
+  - `campaign-30-days.md` Phase 8 plan and day map
+  - `monetization-readiness.md` AdSense and other options
+  - `roadmap-90-days.md`
+  - `deployment.md` Cloudflare Pages setup and verification
+  - `limitations.md` remaining issues
+  - `autocomplete-raw.txt` raw Google autocomplete output
 
 ## Environment variables (all optional, set in Cloudflare Pages)
 - `SITE_URL` canonical origin, e.g. https://sheetshift.pages.dev
